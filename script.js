@@ -3,7 +3,21 @@ const quoteText = document.getElementById("quote");
 const authorText = document.getElementById("author");
 const twitterBtn = document.getElementById("twitter");
 const newQuoteBtn = document.getElementById("new-quote");
+const allButtons = document.querySelectorAll("button");
+const wholeQuote = document.getElementById("quote-text");
 const loader = document.getElementById("loader");
+
+const colors = ["#173f5f", "#20639b", "#3caea3", "#ab63dd", "#ed553b"];
+
+function setRandomColor() {
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+  wholeQuote.style.color = randomColor;
+  authorText.style.color = randomColor;
+  loader.style.borderTop = `16px solid ${randomColor}`;
+  Array.from(allButtons).forEach(button => {
+    button.style.backgroundColor = randomColor;
+  });
+}
 
 function showLoadingSpinner() {
   loader.hidden = false;
@@ -30,7 +44,8 @@ async function getQuote() {
     if (data.quoteAuthor === "") {
       authorText.innerText = "Unknown";
     } else {
-      authorText.innerText = data.quoteAuthor;
+      const text = ` - ${data.quoteAuthor}`;
+      authorText.innerText = text;
     }
     //Reduce font size for long quotes
     if (data.quoteText.length > 120) {
@@ -55,6 +70,7 @@ function tweetQuote() {
 
 //Event Listeners
 newQuoteBtn.addEventListener("click", getQuote);
+newQuoteBtn.addEventListener("click", setRandomColor);
 twitterBtn.addEventListener("click", tweetQuote);
 
 //On Load
